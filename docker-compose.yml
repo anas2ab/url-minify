@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:18-alpine
+    container_name: url-minify-postgres
+    environment:
+      POSTGRES_USER: urlminify
+      POSTGRES_PASSWORD: urlminify
+      POSTGRES_DB: urlminify
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U urlminify -d urlminify"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+volumes:
+  postgres_data:
+  

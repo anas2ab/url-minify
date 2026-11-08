@@ -1,3 +1,7 @@
 spring:
   application:
     name: url-minify
+  datasource:
+    url: jdbc:postgresql://localhost:5432/urlminify
+    username: urlminify
+    password: urlminify

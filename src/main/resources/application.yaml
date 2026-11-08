@@ -5,3 +5,6 @@ spring:
     url: jdbc:postgresql://localhost:5432/urlminify
     username: urlminify
     password: urlminify
+  jpa:
+    hibernate:
+      ddl-auto: validate

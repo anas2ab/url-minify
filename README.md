@@ -9,7 +9,7 @@ A production-style URL shortener with caching, rate limiting, link expiry, click
 
 ## Features
 
-- Shorten any `http(s)` URL to a 7-character code: `POST /api/urls`
+- Shorten any `http(s)` URL to a short Base62 code (3 characters to start, growing as more links are created): `POST /api/urls`
 - Fast redirects with a `302`: `GET /{code}`
 - Custom aliases (`/my-portfolio`), with `409 Conflict` if one is taken
 - Link expiry: an expired link returns `410 Gone`

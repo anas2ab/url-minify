@@ -1,0 +1,3 @@
+ALTER TABLE urls ALTER COLUMN is_custom SET NOT NULL;
+ALTER TABLE urls ALTER COLUMN created_at SET NOT NULL;
+ALTER TABLE urls ALTER COLUMN id SET DEFAULT nextval('url_id_seq');

@@ -22,7 +22,11 @@ public class Base62 {
         for (char c : input.toCharArray()) {
             int index = BASE62_CHARS.indexOf(c);
             if (index == -1) throw new IllegalArgumentException("Invalid character: " + c);
-            result = result * 62 + index;
+            try {
+                result = Math.addExact(Math.multiplyExact(result, 62), index);
+            } catch (ArithmeticException e) {
+                throw new IllegalArgumentException("Decoded value is too large for a long", e);
+            }
         }
         return result;
     }

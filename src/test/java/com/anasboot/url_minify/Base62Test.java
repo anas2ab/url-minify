@@ -101,4 +101,9 @@ public class Base62Test {
         long decoded = Base62.decode(encoded);
         assertEquals(maxLong, decoded);
      }
+
+     @Test
+    void decodeRejectsCodesTooBigForLong() {
+        assertThrows(IllegalArgumentException.class, () -> Base62.decode("zzzzzzzzzzzz"));
+    }
 }

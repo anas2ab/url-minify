@@ -83,4 +83,22 @@ public class Base62Test {
         long decoded = Base62.decode(encoded);
         assertEquals(maxLong, decoded);
      }
+
+     @Test 
+     void decodeRejectsEmptyString() {
+        assertThrows(IllegalArgumentException.class, () -> Base62.decode(""));
+     }
+
+     @Test 
+     void decodeRejectsInvalidCharactersInMiddle() {
+        assertThrows(IllegalArgumentException.class, () -> Base62.decode("ab-c"));
+     }
+
+     @Test 
+     void roundTripLargestLong() {
+        long maxLong = Long.MAX_VALUE;
+        String encoded = Base62.encode(maxLong);
+        long decoded = Base62.decode(encoded);
+        assertEquals(maxLong, decoded);
+     }
 }

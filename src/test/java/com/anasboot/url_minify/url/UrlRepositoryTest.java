@@ -2,6 +2,7 @@ package com.anasboot.url_minify.url;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Optional;
@@ -13,6 +14,7 @@ import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabas
 import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.jpa.test.autoconfigure.TestEntityManager;
 import org.springframework.context.annotation.Import;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import com.anasboot.url_minify.Base62;
 import com.anasboot.url_minify.TestcontainersConfiguration;
@@ -57,5 +59,15 @@ public class UrlRepositoryTest {
         assertEquals(save.getLongUrl(), found.get().getLongUrl());
         assertEquals(code, found.get().getCode());
         assertTrue(found.get().isCustom());
+    }
+
+    @Test 
+    void rejectsDuplicateCode() {
+        long id1 = urlRepository.nextId();
+        Url save1 = Url.custom(id1, "taken", "https://www.example.com", null);
+        urlRepository.save(save1);
+        long id2 = urlRepository.nextId();
+        Url save2 = Url.custom(id2, "taken", "https://www.example.org", null);
+        assertThrows(DataIntegrityViolationException.class, () -> urlRepository.saveAndFlush(save2));
     }
 }

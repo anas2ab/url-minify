@@ -23,7 +23,7 @@ A production-style URL shortener with caching, rate limiting, link expiry, click
 | Layer        | Choice                          | Why |
 |--------------|---------------------------------|-----|
 | Language     | Java 21 + Spring Boot 4         | Mature web stack, easy to test, widely used in industry |
-| Database     | PostgreSQL 16                   | Source of truth; sequences + unique indexes make ID generation simple and safe |
+| Database     | PostgreSQL 18                   | Source of truth; sequences + unique indexes make ID generation simple and safe |
 | Cache        | Redis 7                         | Sub-millisecond reads for redirects; also backs the rate limiter and click counters |
 | Local infra  | Docker Compose                  | One command starts the app, Postgres, and Redis |
 | Testing      | JUnit 5 + Testcontainers        | Integration tests against a real Postgres and Redis |

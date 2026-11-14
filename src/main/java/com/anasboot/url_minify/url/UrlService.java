@@ -1,6 +1,8 @@
 package com.anasboot.url_minify.url;
 
 import java.time.Instant;
+import java.util.Set;
+
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service 
 public class UrlService {
     
+    private static final Set<String> RESERVED_ALIASES = Set.of("actuator", "api", "health");
+    
     private final UrlRepository urlRepository;
     
     public UrlService(UrlRepository urlRepository) {
@@ -20,6 +24,9 @@ public class UrlService {
     @Transactional 
     public Url shorten(String longUrl, String customAlias, Instant expiresAt) {
         if(customAlias != null && !customAlias.isEmpty()) {
+            if(RESERVED_ALIASES.contains(customAlias.toLowerCase())) {
+                throw new AliasTakenException("Alias is reserved: " + customAlias);
+            }
             if(urlRepository.existsByCode(customAlias)) {
                 throw new AliasTakenException("Alias already exists: " + customAlias);
             }

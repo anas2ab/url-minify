@@ -73,4 +73,12 @@ public class UrlServiceTest {
         String longUrl = urlService.resolve(url.getCode());
         assertEquals("https://www.example.com", longUrl);
     }
+
+    @Test 
+    void rejectsReservedAlias() {
+        assertThrows(AliasTakenException.class, () -> urlService.shorten("https://www.example.com", "actuator", null));
+        assertThrows(AliasTakenException.class, () -> urlService.shorten("https://www.example.com", "api", null));
+        assertThrows(AliasTakenException.class, () -> urlService.shorten("https://www.example.com", "health", null));
+        assertThrows(AliasTakenException.class, () -> urlService.shorten("https://www.example.com", "Actuator", null));
+    }
 }

@@ -50,7 +50,7 @@ public class UrlService {
 
     @Transactional(readOnly = true)
     public String resolve(String code) {
-        Url url = urlRepository.findByCode(code).orElseThrow(() -> new UrlNotFoundException("url doesn't exist"));
+        Url url = urlRepository.findByCode(code).orElseThrow(() -> new UrlNotFoundException("No URL found for code: " + code));
         if(url.getExpiresAt() != null && url.getExpiresAt().isBefore(Instant.now())) {
             throw new UrlExpiredException("URL has expired for code: " + code);
         }

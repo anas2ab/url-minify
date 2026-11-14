@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.time.Instant;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -45,5 +47,30 @@ public class UrlServiceTest {
     void rejectsTakenAlias() {
         urlService.shorten("https://www.example.com", "taken", null);
         assertThrows(AliasTakenException.class, () -> urlService.shorten("https://www.example.org", "taken", null));
+    }
+
+    @Test 
+    void resolvesExistingCode() {
+        Url url = urlService.shorten("https://www.example.com", null, null);
+        String longUrl = urlService.resolve(url.getCode());
+        assertEquals("https://www.example.com", longUrl);
+    }
+
+    @Test 
+    void throwsNotFoundForUnknownCode() {
+        assertThrows(UrlNotFoundException.class, () -> urlService.resolve("unknown"));
+    }
+
+    @Test 
+    void throwsExpiredForPastExpiry() {
+        Url url = urlService.shorten("https://www.example.com", null, Instant.now().minusSeconds(60));
+        assertThrows(UrlExpiredException.class, () -> urlService.resolve(url.getCode()));
+    }
+
+    @Test 
+    void resolvesWhenExpiryInFuture() {
+        Url url = urlService.shorten("https://www.example.com", null, Instant.now().plusSeconds(3600));
+        String longUrl = urlService.resolve(url.getCode());
+        assertEquals("https://www.example.com", longUrl);
     }
 }

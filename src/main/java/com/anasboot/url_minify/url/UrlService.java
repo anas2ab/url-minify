@@ -1,7 +1,6 @@
 package com.anasboot.url_minify.url;
 
 import java.time.Instant;
-
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -47,5 +46,14 @@ public class UrlService {
                 return url;
             }
         }
+    }
+
+    @Transactional(readOnly = true)
+    public String resolve(String code) {
+        Url url = urlRepository.findByCode(code).orElseThrow(() -> new UrlNotFoundException("url doesn't exist"));
+        if(url.getExpiresAt() != null && url.getExpiresAt().isBefore(Instant.now())) {
+            throw new UrlExpiredException("URL has expired for code: " + code);
+        }
+        return url.getLongUrl();
     }
 }

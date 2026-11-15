@@ -2,7 +2,7 @@
 
 A production-style URL shortener with caching, rate limiting, link expiry, click counting, and real load-test benchmarks.
 
-> **Status:** 🚧 Milestone 2
+> **Status:** 🚧 Milestone 2 in progress
 > **Live demo:** _coming soon_
 
 ---
@@ -254,10 +254,10 @@ curl -i localhost:8080/<code>
 ## Roadmap
 
 ### Milestone 1: API & storage
-- [ ] `POST /api/urls` and `GET /{code}` returning a `302` redirect
-- [ ] Postgres schema with a unique index on `code` (Flyway migration)
-- [ ] Base62 encoding of a counter-based ID, with unit tests
-- [ ] Input validation and consistent error responses (`400` / `404`)
+- [x] `POST /api/urls` and `GET /{code}` returning a `302` redirect
+- [x] Postgres schema with a unique index on `code` (Flyway migration)
+- [x] Base62 encoding of a counter-based ID, with unit tests
+- [x] Input validation and consistent error responses (`400` / `404`)
 
 ### Milestone 2: Caching, aliases & expiry
 - [ ] Redis cache-aside on the redirect path

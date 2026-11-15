@@ -2,7 +2,7 @@
 
 A production-style URL shortener with caching, rate limiting, link expiry, click counting, and real load-test benchmarks.
 
-> **Status:** 🚧 Milestone 1 (API & storage) in progress
+> **Status:** 🚧 Milestone 2
 > **Live demo:** _coming soon_
 
 ---
